@@ -267,20 +267,6 @@ Engage users with content: Send periodic notifications about new updates, tips f
 <a name="phase-3"></a> 
 ### Phase III - Feature Engineering
 
-The number of outliers in the target variable is checked using a box plot and is 2977 of 48895 records. So, it is better to remove these records from the original data for better predictions.
-
-Since all the numerical columns are extremely right skewed with a lot of outliers, box-cox and boxcox1p using power transformer are used to transform the data points into normal curves.
-
-The box-cox transformation is used for attributes that are strictly positive; that is, zeros also cannot be included. The attributes “minimum nights” and “calculated host listings count” are transformed using simple box-cox method.
-
-In situations where the data points contain zero or negative values, boxcox1p along with a power transformer can be used to convert the data into normal curves. First, the power transformer is fitted into the data points to find out the lambda values, which are then used in boxcox1p to transform the respective columns into normal curves. All other numerical columns except the two mentioned above contain zeros and are thus transformed using this method.
-
-A small example of transformation for the column price, before and after is given below:
-
-<img src="images\boxcox-before-and-after.png" alt="price-transformation"></img>
-
-When dealing with categorical columns in nominal scale, such as "neighbourhood" and "neighbourhood group", the method of label encoding was applied. On the other hand, for columns in ordinal scale, such as "room type", one-hot encoding was implemented.
-
 <a name="model-fitting"></a>
 ## Fitting Models to the Data
 
