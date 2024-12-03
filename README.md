@@ -285,114 +285,158 @@ When dealing with categorical columns in nominal scale, such as "neighbourhood" 
 ## Fitting Models to the Data
 
 The train-test split method was used to evaluate the performance of machine learning models. This method involves splitting the available dataset into two 
-parts: a training set and a testing set. The training set,which accounted for 70% of the data, was used to train the machine learning models, while the remaining 30% was used for testing the models. The training set had 32,142 records, and the testing set had 13,776 records. The train-test split allowed for the evaluation of the machine learning models on new, unseen data, which is essential for determining their effectiveness and generalizability.
+parts: a training set and a testing set. The training set,which accounted for 80% of the data, was used to train the machine learning models, while the remaining 20% was used for testing the models. The training set had 11439 records, and the testing set had 2860 records. The train-test split allowed for the evaluation of the machine learning models on new, unseen data, which is essential for determining their effectiveness and generalizability.
+The "device" feature was label encoded.The target column "label" is label encoded to represent 0 for "retained" and 1 for "churn".
 
-For a quick head start, an ExtraTreesRegressor was built on the data to understand the features that are important for model building. The result of this model when plotted onto a bar graph was as follows:
+Few Baseline models will be created at first and the models will be evaluated using metrics such as Training accuracy, Testing Accuracy, Precision, Recall and F1 Score.These metrics are chosen because the problem at hand is a classifaction problem.
 
-<img src="images\newplot.png" alt="extra-tree-regressor"></img>
-
-The feature private room has a higher contribution for predicting price followed by longitude, latitude, etc...
-
-For each of the models given below, a GridSearchCV or RandomizedSearchCV was used to find the best parameters suitable for the models.
-
-<a name="lin-reg"></a>
-### Linear Regression
-A simple linear model that attempts to predict the relationship between a dependent variable and one or more independent variables through a linear equation.
-
-Best Parameters: {'fit_intercept': True}
-
-MAE : 0.54; MSE : 0.50; RMSE : 0.71; R2 : 0.52
-
-<a name="dt"></a>
-### Decision Tree
-A tree-structured model that breaks down a dataset into smaller and smaller subsets based on a set of decisions or rules until the subsets contain instances with a single class or value.
-
-Best Parameters: {'max_depth': 5, 'min_samples_leaf': 2, 'min_samples_split': 2}
-
-MAE : 0.52; MSE : 0.45; RMSE : 0.67; R2 : 0.56
+After that the models will be subjected to hyperparameter tuning and the best model will be selected according to the bussiness needs.
 
 <a name="rf"></a>
 ### Random Forest
-An ensemble model that combines multiple decision trees to improve prediction accuracy and reduce overfitting.
+A Random Forest model is an ensemble learning method primarily used for classification and regression tasks. It works by building multiple decision trees during training and combines their outputs to improve the overall predictive performance and control overfitting. A simple random forest model with default hyperparameters that tries to predict whether the user will churn or not.
 
-Best Parameters: {'n_estimators': 130, 'min_samples_split': 9, 'min_samples_leaf': 6, 'max_features': 10, 'max_depth': 10, 'bootstrap': True}
+Training Accuracy : 100% , Testing Accuracy : 82%
+Class 0 : Precision : 84%, Recall :97%, F1 Score : 90% 
+Class 1 : Precision: 48%, Recall : 11%, F1 Score : 18% 
 
-MAE : 0.47; MSE : 0.39; RMSE : 0.63; R2 : 0.62
+<a name="gb"></a>
+### Gradient Boosting
+Gradient Boosting is an ensemble technique that builds a series of weak learners (typically decision trees) sequentially, where each new tree tries to correct the errors made by the previous trees. This sequential process improves the model's accuracy and generalization.
 
-<a name="knn"></a>
-### KNN
-A non-parametric model that predicts the value of a data point based on the values of its nearest neighbors in the training data.
+Training Accuracy: 94 %, Testing Accuracy : 81 %, Class 0 : Precision : 0.84, Recall : 95%, F1 Score : 89%, Class 1 : precision : 42%, recall 15%, F1 Score 22 %
 
-Best Parameters: {'weights': 'distance', 'p': 1, 'n_neighbors': 13, 'leaf_size': 44, 'algorithm': 'brute'}
 
-MAE : 0.60; MSE : 0.60; RMSE : 0.77; R2 : 0.43
 
-<a name="ada-boost"></a>
-### Ada Boost
-A boosting algorithm that combines multiple weak learners into a strong learner through weighted voting to improve prediction accuracy.
+<a name="svc"></a>
+### Support Vector Classifier
+An SVC model refers to the Support Vector Classifier, which is a type of Support Vector Machine (SVM) used for classification tasks. SVC is a supervised machine learning algorithm that seeks to find the optimal boundary (or hyperplane) to separate classes in the feature space.
+Here a Baseline Support Vector model is used with default hyperparameters.
 
-Best Parameters: {'n_estimators': 400, 'learning_rate': 0.013848863713938732, 'base_estimator': DecisionTreeRegressor(max_depth=2)}
+Training Accuracy : 82%, Testing Accuracy : 82%, Class 0 :precision : 82% ,recall : 100%, Class 1 : precision : 0%, recall :0%, F1 Score :0%
 
-MAE : 0.58; MSE : 0.55; RMSE : 0.74; R2 : 0.47
+<a name="log-reg"></a>
+### Logistic Regression
+Logistic Regression is a supervised machine learning algorithm commonly used for binary classification tasks.Logistic regression predicts the probability that an instance belongs to a particular class and maps it to a binary outcome using a sigmoid function.
+A simple Logistic Regression model is used with default hyperparameter values.
 
-<a name="gradient-boost"></a>
-### Gradient Boost
-A boosting algorithm that combines multiple weak learners to make a strong learner through an additive model, where each new learner corrects the errors of the previous one.
+Training Accuracy : 82 %, Training Accuracy : 82%, Class 0 : Precision 83 %, Recall :99 %, F1 Score : 90%, Class 1 : Precision : 57% , Recall :9% , F1 Score : 16%
 
-Best Parameters: {'subsample': 0.8999999999999999, 'n_estimators': 600, 'min_samples_split': 6, 'max_depth': 7, 'learning_rate': 0.018307382802953697}
+<a name="neural-network"></a>
+### Neural Network
 
-MAE : 0.46; MSE : 0.38; RMSE : 0.62; R2 : 0.63
+A Neural Network model is a computational framework inspired by the structure and functioning of the human brain, designed to recognize patterns and relationships in data. It is widely used in machine learning for tasks like classification, regression, and feature extraction.
 
-<a name="light-gbm"></a>
-### Light GBM
-A gradient boosting framework that uses a tree-based learning algorithm and aims to improve efficiency, accuracy, and speed by using a novel technique called 
-Gradient-based One-Side Sampling (GOSS).
+A simple neural network model with default hyperparameters is used.
 
-Best Parameters: {'num_leaves': 38, 'n_estimators': 170, 'min_data_in_leaf': 23, 'max_depth': 10, 'learning_rate': 0.13219411484660287, 'feature_fraction': 0.8, 'colsample_bytree': 0.5}
+Training Accuracy : 79%, Testing Accuracy : 79 %, Class 0 : Precision 86%, Recall : 90%, F1 Score : 88%, Class 1: Precision :38%, Recall : 30%, F1 Score : 34%
 
-MAE : 0.46; MSE : 0.38; RMSE : 0.62; R2 : 0.63
+**All the baseline models seems to has comparitevely very low precision and recall on class 1 compared to class 0. It may be due to imbalanced dataset.As per our EDA class 1 (churn) is 17.7% while that of class 0 is 82.3 %(retained). I used stratify which ensures that the proportions of the classes in both training and test sets are similar to the original dataset, it does not address the underlying imbalance in the dataset itself. We need to use balanced class weights or resampling techniques like smote**
 
-<a name="cat-boost"></a>
-### Cat Boost
-A gradient boosting framework that uses categorical features as input and applies a novel algorithm called Ordered Boosting to reduce overfitting and improve 
-prediction accuracy.
+# Hyperparameter Tuning
 
-Best Parameters: {'subsample': 0.8999999999999999, 'n_estimators': 600, 'max_depth': 9, 'learning_rate': 0.061359072734131756, 'l2_leaf_reg': 54.62277217684348, 'colsample_bylevel': 0.7999999999999999}
+<a name="rf with balanced weights"></a>
+### Random Forest with balanced class weights
 
-MAE : 0.46; MSE : 0.38; RMSE : 0.62; R2 : 0.63
+A Random Forest with balanced class weights is a variation of the standard Random Forest algorithm, designed to handle imbalanced datasets where one class significantly outnumbers the others. It modifies the model's behavior to give equal importance to all classes, improving its ability to predict the minority class accurately.
+Balanced weights assign higher importance to minority classes, reducing bias.The weight for a class is inversely proportional to its frequency in the dataset.
 
-<a name="xg-boost"></a>
-### XGBoost
-A gradient boosting framework that uses a tree-based learning algorithm and applies several techniques to improve prediction accuracy, such as regularization, parallel processing, and sparsity awareness.
+Training Accuracy : 80%, Testing Accuracy : 73%, Class 0 : precision : 89%, Recall : 78%, F1 Score : 83%, Class 1 : Precision : 35%, Recall : 54%, F1 Score : 42%
 
-Best Parameters: {'subsample': 0.7999999999999999, 'reg_alpha': 0.016681005372000592, 'n_estimators': 500, 'max_depth': 9, 'learning_rate': 0.018307382802953697, 'gamma': 0.1291549665014884, 'colsample_bytree': 0.6}
+<a name="rf"></a>
+### Random Forest Model with balanced class weights and best parameters(Random Search)
 
-MAE : 0.46; MSE : 0.37; RMSE : 0.61; R2 : 0.64
+A Random Forest model with balanced class weights and hyperparameter tuning using Random Search combines the robustness of Random Forest with the ability to handle class imbalance effectively while finding the best parameters for optimal performance.
 
-<a name="key-findings"></a>
-## Key Findings
-XGBoost performed the best among all the models tested, with an R-squared score of 0.64, indicating that 64% of the variance in the target variable can be explained by this model.
+Best Parameters: {'n_estimators': 200, 'min_samples_split': 2, 'min_samples_leaf': 1, 'max_depth': 30}
 
-<img src="images\cv point plot.png" alt="model-comparison"></img>
-The point plot shows that XGBoost had the highest performance, followed by Cat Boost, Light GBM, Gradient Boost and Random Forest while KNN had the lowest performance.
+Training Accuracy : 100%, Testing Accuracy : 82%, Class 0 : Precision: 83%, Recall 98%, F1 Score: 90%, Class 1 : Precison : 52 %, Recall : 9%, F1 Score 16%
 
-Linear regression, Decision Tree and AdaBoost, performed somewhere in between XGBoost and KNN.
+<a name="rf"></a>
+### Random Forest Model with SMOTE and best parameters (Random Search)
+This process combines Synthetic Minority Oversampling Technique (SMOTE) for handling imbalanced datasets with Random Forest for classification, and optimizes the model using Random Search to identify the best hyperparameters.
 
-<img src="images\final table.png" alt="table-model-comparison"></img>
+Best Parameters: {'n_estimators': 200, 'min_samples_split': 5, 'min_samples_leaf': 2, 'max_features': 'log2', 'max_depth': 20, 'criterion': 'entropy'}
 
-The table shows that XGBoost had the lowest mean squared 
-error (MSE), root mean squared error (RMSE), and 
-mean absolute error (MAE), and the highest R-squared 
-score among all the models tested.
+Training Accuracy : 98%, Testing Accuracy : 71%, Class 0 : Precision : 87%, Recall : 77%, F1 Score : 82%, Class 1 : Precision : 31 %, Recall : 47%, F1 Score : 37%
 
-<a name="recommendation"></a>
-## Recommendations
-- Based on the analysis, XGBoost is recommended as the best model for the given dataset and target variable. Further optimization and tuning of XGBoost could potentially improve its performance.
-- Feature engineering and selection could be explored to potentially improve the performance of the models.
-- Cross-validation techniques such as k-fold or stratified k-fold can be used to validate the model's performance on different subsets of the data and avoid overfitting.
+<a name="rf"></a>
+### Random Forest with SMOTE and Random Search
+Similar to previous model but the hyperparameters are adjusted to deal with overfitting.
 
-<a name="conclusion"></a>
-## Conclusion
-- The results of the analysis indicate that XGBoost is the most suitable model for the given dataset and target variable.
-- The study demonstrates the importance of exploring multiple models and evaluating their performance to select the best one for the given problem.
-- The findings can be used to make data-driven decisions and improve the performance of the model for similar problems in the future.
+Best Parameters: {'n_estimators': 100, 'min_samples_split': 10, 'min_samples_leaf': 4, 'max_features': 'log2', 'max_depth': 20, 'criterion': 'entropy'}
+
+Training Accuracy : 93%, Testing Accuracy : 71%, Class 0 : Precision : 87%, Recall : 76% , F1 Score : 82%, Class 1 : Precision : 31 % , Recall : 48%, F1 Score 37%
+
+<a name="rf"></a>
+### Random Forest with SMOTE
+
+Training Accuracy : 100%, Testing Accuracy: 72%, Class 0 : Precision : 87%, Recall : 78%, F1 Score : 82%, Class 1: Precision : 30%, Recall : 45%, F1_Score :36%
+
+<a name="log-reg"></a>
+### Logistic Regression with balanced weights
+
+Training Accuracy : 67%, Testing Accuracy :67%, Class 0 : Precision : 91%, Recall 67%, F1 Score :77%, Class 1 : Precision : 31%, Recall 67%, F1 Score : 42%
+
+<a name="log-reg"></a>
+### Logistic Regression with balanced weights and Random Search
+
+Training Accuracy : 67%, Testing Accuracy :67%, Class 0 : Precision : 90%, Recall 67%, F1 Score :77%, Class 1 : Precision : 31%, Recall 67%, F1 Score : 42%
+
+<a name="log-reg"></a>
+### Logistic Regression with balanced weights and Random Search
+
+Training Accuracy : 67%, Testing Accuracy :67%, Class 0 : Precision : 90%, Recall 67%, F1 Score :77%, Class 1 : Precision : 31%, Recall 67%, F1 Score : 42%
+
+<a name="xgb"></a>
+### Gradient Boosting with best parameters (Random Search)
+
+Best Parameters: {'subsample': 0.8, 'reg_lambda': 10, 'reg_alpha': 10, 'n_estimators': 100, 'max_depth': 3, 'learning_rate': 0.1, 'gamma': 0, 'colsample_bytree': 1.0}
+
+Training Accuracy : 83%, Testing Accuracy :82%, Class 0 : Precision : 83%, Recall 98%, F1 Score :90%, Class 1 : Precision : 52%, Recall 9%, F1 Score : 16%
+
+<a name="xgb"></a>
+### Gradient Boosting with SMOTE and best parameters (Random Search)
+
+
+Training Accuracy : 80%, Testing Accuracy :69%, Class 0 : Precision : 88%, Recall 72%, F1 Score :80%, Class 1 : Precision : 31%, Recall :56%, F1 Score : 40%
+
+### Gradient Boosting with best parameters (Random Search)
+
+{'subsample': 0.6, 'scale_pos_weight': 1, 'reg_lambda': 10, 'reg_alpha': 10, 'n_estimators': 500, 'max_depth': 3, 'learning_rate': 0.05, 'gamma': 5, 'colsample_bytree': 1.0}
+
+Training Accuracy : 82%, Testing Accuracy :82%, Class 0 : Precision : 83%, Recall 99%, F1 Score :90%, Class 1 : Precision : 51%, Recall :7%, F1 Score : 12%
+
+### Gradient Boosting with threshold adjustments
+
+Training Accuracy : 78%, Testing Accuracy :77%, Class 0 : Precision : 88%, Recall 85%, F1 Score :86%, Class 1 : Precision : 38%, Recall :44%, F1 Score : 41%
+
+<a name="best-model"></a>
+## Best Model
+Key Metrics to Consider:
+
+Recall (Class 1): High recall is crucial because it represents how many actual churners are being correctly identified. A higher recall means fewer churners are missed.
+
+Precision (Class 1): Precision tells you how many of the customers predicted to churn actually do churn. While precision is important, it can be less critical than recall in churn prediction, as false positives (predicting a non-churner will churn) are often manageable.
+
+Accuracy: While this is an overall metric, it might be misleading in highly imbalanced datasets like churn, where the majority of customers may not churn. Therefore, accuracy alone shouldn't be the primary criterion.
+
+Analysis of Models:
+
+If capturing the maximum churners is the priority:
+
+Model 14 (XGBoost with SMOTE):
+
+Recall (Class 1): 56%
+
+Precision (Class 1): 30%
+
+Use Case: Good when identifying as many churners as possible outweighs the cost of targeting some false positives (e.g., offering discounts or promotions) (prone to overfitting)
+
+Model 16 (XGBoost with Threshold Adjustment):
+
+Recall (Class 1): 44%
+
+Precision (Class 1): 38%
+
+Use Case: Best choice for a trade-off between identifying churners and not wasting resources on non-churners.
