@@ -51,24 +51,7 @@ Importance of Waze
 <a name="dataset"></a>
 ## Dataset
 This synthetic dataset is part of the Google Advanced Data Analytics Professional Certificate program, simulating user behavior data for the Waze navigation app. It's available on Kaggle,  <a href="https://www.kaggle.com/datasets/mostafamohammednouh/waze-synthetic-user-churn-data">Waze Churn Data</a>. making it accessible for data science and machine learning projects.
-
-
-<a name="data-prep"></a>
-## Data Preperation and Understanding
-One of the first steps engaged in was to outline the sequence of steps that will be following for the project. Each of these steps are elaborated below:
-
-<a name="phase-1"></a>
-### Phase I - Data Extraction and Cleaning
-- Reading the dataset using Pandas
-- Identifying and handling missing values, outliers and duplicates
-
-<br><br>
-
-<img src="images\summary 1.png" alt="descriptive-statistics"></img>
-
 The dataset contains 14,999 records with 13 columns, including a mix of numerical and categorical data types. It's designed to simulate real-world user engagement and churn patterns within the Waze app.
-
-
 Key Features
 
 ID : Unique identifier for each user (int64)
@@ -98,6 +81,15 @@ Spread of the Dataset
 •	Mix of integer, float, and object data types
 
 
+<a name="data-prep"></a>
+## Data Preperation and Understanding
+One of the first steps engaged in was to outline the sequence of steps that will be following for the project. Each of these steps are elaborated below:
+
+<a name="phase-1"></a>
+### Phase I - Data Extraction and Cleaning
+- Reading the dataset using Pandas
+- Identifying and handling missing values, outliers and duplicates
+<br><br>
 <a name="phase-2"></a>
 ### Phase II - Exploratory Data Analysis
 - Performing univariate, bivariate and multivariate analysis to understand the data
